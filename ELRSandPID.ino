@@ -39,6 +39,8 @@ void loop() {
   if (crsf.getChannel(5)>1500){
     Elevator.writeMicroseconds(1500 - estabilizacion.outputsPitch());
     Aileron.writeMicroseconds(1500 + estabilizacion.outputsRoll());
+    Motor.writeMicroseconds(crsf.getChannel(3));
+    Rudder.writeMicroseconds(crsf.getChannel(4));
     Serial.print(estabilizacion.outputsPitch()); Serial.println(estabilizacion.outputsRoll()); 
     Serial.println("Switch activao");
   }
