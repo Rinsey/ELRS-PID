@@ -1,10 +1,14 @@
 #include <CrsfSerial.h>
 #include <Servo.h>
 #include <ServoStabilizer.h>
+#include <MPU6050.h>
 
 SerialPIO Receiver(10, 11);
 CrsfSerial crsf(Receiver, 200000);
 Servo Aileron, Elevator, Motor, Rudder;
+
+MPU6050 mpu;
+int16_t ax, ay, az, gx, gy, gz;
 
 ServoStabilizer estabilizacion;
 
@@ -13,6 +17,7 @@ ServoStabilizer estabilizacion;
 void setup() {
   
   Serial.begin(115200);
+  mpu.initialize();
 
   Serial.println("Init ELRS");
   Receiver.begin(200000);
@@ -34,7 +39,12 @@ void setup() {
 void loop() {
 
   crsf.loop();
-  estabilizacion.update();
+  
+  mpu.getMotion(&ax, &ay, az, &gx, &gy, &gz);
+  float pitch = atan2(-ax, sqrt(ay * ay + az * az)) * 180.0 / M_PI;
+  float roll = atan2(ay, sqrt(ax * ax + az * az)) * 180.0 / M_PI;
+  
+  estabilizacion.update(pitch, roll);
 
   if (crsf.getChannel(5)>1500){
     Elevator.writeMicroseconds(1500 - estabilizacion.outputsPitch());
