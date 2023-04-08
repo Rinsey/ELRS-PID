@@ -31,7 +31,8 @@ void setup() {
   Rudder.writeMicroseconds(1500);
 
   estabilizacion.begin();
-  estabilizacion.setGains(20,0.03,0.02);
+  estabilizacion.setGainsRoll(20,0.03,0.02);
+  estabilizacion.setGainsPitch(20,0.03,0.02);
   estabilizacion.setAngles(0.0,0.0);
 
 }
@@ -49,6 +50,8 @@ void loop() {
   if (crsf.getChannel(5)>1500){
     Elevator.writeMicroseconds(1500 - estabilizacion.outputsPitch());
     Aileron.writeMicroseconds(1500 + estabilizacion.outputsRoll());
+    Motor.writeMicroseconds(crsf.getChannel(3));
+    Rudder.writeMicroseconds(crsf.getChannel(4));
     Serial.print(estabilizacion.outputsPitch()); Serial.println(estabilizacion.outputsRoll()); 
     Serial.println("Switch activao");
   }
