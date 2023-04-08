@@ -40,7 +40,7 @@ void loop() {
 
   crsf.loop();
   
-  mpu.getMotion(&ax, &ay, &az, &gx, &gy, &gz);
+  mpu.getMotion6(&ax, &ay, &az, &gx, &gy, &gz);
   float pitch = atan2(-ax, sqrt(ay * ay + az * az)) * 180.0 / M_PI;
   float roll = atan2(ay, sqrt(ax * ax + az * az)) * 180.0 / M_PI;
   
