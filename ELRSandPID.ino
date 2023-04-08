@@ -30,7 +30,7 @@ void setup() {
   Motor.writeMicroseconds(1000);
   Rudder.writeMicroseconds(1500);
 
-  estabilizacion.initialize();
+  estabilizacion.begin();
   estabilizacion.setGains(20,0.03,0.02);
   estabilizacion.setAngles(0.0,0.0);
 
